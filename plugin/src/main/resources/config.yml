@@ -1,0 +1,32 @@
+mode: "standalone"  # standalone | embedded
+token: ""
+
+db_type: "postgresql"  # postgresql | sqlite
+db_host: "localhost"
+db_port: 5432
+db_name: "mydb"
+db_user: "postgres"
+db_password: "secret"
+
+auth_timeout_seconds: 120
+verification_code_length: 6
+
+discord_link: "discord.gg/ЗАМЕНИ_НА_СВОЙ"
+
+messages:
+  first_login:
+    header: "&#FF4444Ты не зарегистрирован!"
+    code: "&#FFAA00Код: &#55FFFF{code}"
+    code_hover: "Нажми чтобы скопировать код"
+    discord: "&#AAAAAADiscord: &#FFFFFF{link}"
+    discord_hover: "Открыть Discord"
+    expires: "&#555555Код действителен {time} сек."
+  returning_login:
+    header: "&#FFAA00Подтверди вход в Discord!"
+    body: "&#AAAAAABот отправил тебе личное сообщение в Discord."
+    react: "&#AAAAAAПоставь &#57F287✅ &#AAAAAAчтобы войти."
+    timeout: "&#555555Таймаут: {time} сек."
+  expired:
+    header: "&#FF4444Время ожидания истекло."
+    body: "&#AAAAAAЗайди снова и подтверди вход в Discord."
+  success: "&#55FF55Авторизация успешна!"
