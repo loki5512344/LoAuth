@@ -68,15 +68,50 @@ public final class FoxAuth {
 
         try {
             discordBot = new Bot(new BotConfig() {
-                @Override public String getDbType() { return cfg.getDbType(); }
-                @Override public String getToken() { return token; }
-                @Override public String getDbHost() { return cfg.getDbHost(); }
-                @Override public int getDbPort() { return cfg.getDbPort(); }
-                @Override public String getDbName() { return cfg.getDbName(); }
-                @Override public String getDbUser() { return cfg.getDbUser(); }
-                @Override public String getDbPassword() { return cfg.getDbPassword(); }
-                @Override public int getAuthTimeoutSeconds() { return cfg.getAuthTimeoutSeconds(); }
-                @Override public int getVerificationCodeLength() { return cfg.getVerificationCodeLength(); }
+                @Override
+                public String getDbType() {
+                    return cfg.getDbType();
+                }
+
+                @Override
+                public String getToken() {
+                    return token;
+                }
+
+                @Override
+                public String getDbHost() {
+                    return cfg.getDbHost();
+                }
+
+                @Override
+                public int getDbPort() {
+                    return cfg.getDbPort();
+                }
+
+                @Override
+                public String getDbName() {
+                    return cfg.getDbName();
+                }
+
+                @Override
+                public String getDbUser() {
+                    return cfg.getDbUser();
+                }
+
+                @Override
+                public String getDbPassword() {
+                    return cfg.getDbPassword();
+                }
+
+                @Override
+                public int getAuthTimeoutSeconds() {
+                    return cfg.getAuthTimeoutSeconds();
+                }
+
+                @Override
+                public int getVerificationCodeLength() {
+                    return cfg.getVerificationCodeLength();
+                }
             });
             log.info("Discord bot started in embedded mode.");
         } catch (Exception e) {
@@ -86,8 +121,12 @@ public final class FoxAuth {
 
     @Subscribe
     public void onShutdown(final ProxyShutdownEvent event) {
-        if (discordBot != null) discordBot.shutdown();
-        if (db != null) db.close();
+        if (discordBot != null) {
+            discordBot.shutdown();
+        }
+        if (db != null) {
+            db.close();
+        }
     }
 
     private Path getOrCreateConfig(final String fileName) throws IOException {
@@ -95,7 +134,9 @@ public final class FoxAuth {
         Path target = dataDir.resolve(fileName);
         if (Files.notExists(target)) {
             try (InputStream in = getClass().getResourceAsStream("/" + fileName)) {
-                if (in == null) throw new IOException("Resource not found: " + fileName);
+                if (in == null) {
+                    throw new IOException("Resource not found: " + fileName);
+                }
                 Files.copy(in, target);
             }
         }

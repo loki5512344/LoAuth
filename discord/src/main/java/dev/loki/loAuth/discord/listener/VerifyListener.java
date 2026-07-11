@@ -18,11 +18,17 @@ public final class VerifyListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(final MessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) return;
-        if (!event.isFromType(ChannelType.PRIVATE)) return;
+        if (event.getAuthor().isBot()) {
+            return;
+        }
+        if (!event.isFromType(ChannelType.PRIVATE)) {
+            return;
+        }
 
         String content = event.getMessage().getContentRaw().trim();
-        if (!content.toUpperCase().startsWith(COMMAND)) return;
+        if (!content.toUpperCase().startsWith(COMMAND)) {
+            return;
+        }
 
         String[] parts = content.split("\\s+", 2);
         if (parts.length < 2) {

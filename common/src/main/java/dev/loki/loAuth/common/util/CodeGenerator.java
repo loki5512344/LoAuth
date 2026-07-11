@@ -10,12 +10,14 @@ public final class CodeGenerator {
     private CodeGenerator() {}
 
     public static String generate(final int length) {
-        if (length < 4 || length > 16)
+        if (length < 4 || length > 16) {
             throw new IllegalArgumentException("Code length must be between 4 and 16");
+        }
 
         StringBuilder sb = new StringBuilder(length);
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++) {
             sb.append(ALPHABET.charAt(RNG.nextInt(ALPHABET.length())));
+        }
         return sb.toString();
     }
 }

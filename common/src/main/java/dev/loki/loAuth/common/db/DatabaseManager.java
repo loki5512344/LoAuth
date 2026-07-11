@@ -8,7 +8,11 @@ import dev.loki.loAuth.common.util.CodeGenerator;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,7 +163,9 @@ public final class DatabaseManager implements AutoCloseable {
                 throw new SQLException("INSERT returned no rows");
             } else {
                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) return mapUser(rs);
+                    if (rs.next()) {
+                        return mapUser(rs);
+                    }
                     throw new SQLException("INSERT returned no rows");
                 }
             }
@@ -240,7 +246,9 @@ public final class DatabaseManager implements AutoCloseable {
     }
 
     public Optional<String> consumeVerificationCode(final String code) {
-        if (sqlite) return consumeDeleteSelect("pending_verifications", "code", code);
+        if (sqlite) {
+            return consumeDeleteSelect("pending_verifications", "code", code);
+        }
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("""
                 DELETE FROM pending_verifications
@@ -309,7 +317,9 @@ public final class DatabaseManager implements AutoCloseable {
     }
 
     public Optional<String> consumeLoginToken(final String token) {
-        if (sqlite) return consumeDeleteSelect("pending_logins", "token", token);
+        if (sqlite) {
+            return consumeDeleteSelect("pending_logins", "token", token);
+        }
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("""
                 DELETE FROM pending_logins
@@ -327,7 +337,9 @@ public final class DatabaseManager implements AutoCloseable {
     }
 
     public Optional<String> consumeLoginTokenByMessageId(final String messageId) {
-        if (sqlite) return consumeDeleteSelect("pending_logins", "message_id", messageId);
+        if (sqlite) {
+            return consumeDeleteSelect("pending_logins", "message_id", messageId);
+        }
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("""
                 DELETE FROM pending_logins
@@ -378,7 +390,9 @@ public final class DatabaseManager implements AutoCloseable {
                     "SELECT minecraft_nick FROM pending_logins WHERE expires_at <= ?")) {
                     ps.setLong(1, now);
                     try (ResultSet rs = ps.executeQuery()) {
-                        while (rs.next()) nicks.add(rs.getString("minecraft_nick"));
+                        while (rs.next()) {
+                            nicks.add(rs.getString("minecraft_nick"));
+                        }
                     }
                 }
                 if (!nicks.isEmpty()) {
@@ -399,7 +413,9 @@ public final class DatabaseManager implements AutoCloseable {
                  "DELETE FROM pending_logins WHERE expires_at <= ? RETURNING minecraft_nick")) {
             ps.setLong(1, now);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) nicks.add(rs.getString("minecraft_nick"));
+                while (rs.next()) {
+                    nicks.add(rs.getString("minecraft_nick"));
+                }
             }
         } catch (SQLException e) {
             throw new DatabaseException("Failed to pop expired logins", e);
@@ -456,23 +472,27 @@ public final class DatabaseManager implements AutoCloseable {
     }
 
     private static void validateNick(final String nick) {
-        if (nick == null || !nick.matches("^[a-zA-Z0-9_]{3,16}$"))
+        if (nick == null || !nick.matches("^[a-zA-Z0-9_]{3,16}$")) {
             throw new IllegalArgumentException("Invalid Minecraft nick: " + nick);
+        }
     }
 
     private static void validateDiscordId(final String id) {
-        if (id == null || !id.matches("^[0-9]{17,20}$"))
+        if (id == null || !id.matches("^[0-9]{17,20}$")) {
             throw new IllegalArgumentException("Invalid Discord ID: " + id);
+        }
     }
 
     private static RuntimeException translateSqlException(final SQLException e) {
         String state = e.getSQLState();
         if ("23505".equals(state) || "23000".equals(state)) {
             String msg = e.getMessage();
-            if (msg != null && (msg.contains("minecraft_nick") || msg.contains("UNIQUE constraint failed: users.minecraft_nick")))
+            if (msg != null && (msg.contains("minecraft_nick") || msg.contains("UNIQUE constraint failed: users.minecraft_nick"))) {
                 return new DuplicateUserException("Minecraft nick already registered");
-            if (msg != null && (msg.contains("discord_id") || msg.contains("UNIQUE constraint failed: users.discord_id")))
+            }
+            if (msg != null && (msg.contains("discord_id") || msg.contains("UNIQUE constraint failed: users.discord_id"))) {
                 return new DuplicateUserException("Discord ID already registered");
+            }
             return new DuplicateUserException("Duplicate entry");
         }
         return new DatabaseException("Database error", e);

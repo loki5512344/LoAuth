@@ -11,6 +11,8 @@ import java.nio.file.Path;
 
 public final class BotLauncher {
 
+    private BotLauncher() {}
+
     private static final Logger log = LoggerFactory.getLogger(BotLauncher.class);
 
     public static void main(final String[] args) {
@@ -33,7 +35,9 @@ public final class BotLauncher {
         Path path = Path.of(System.getProperty("user.dir")).resolve(fileName);
         if (Files.notExists(path)) {
             try (InputStream in = BotLauncher.class.getResourceAsStream("/" + fileName)) {
-                if (in == null) throw new IOException("Resource not found: " + fileName);
+                if (in == null) {
+                    throw new IOException("Resource not found: " + fileName);
+                }
                 Files.copy(in, path);
             }
         }

@@ -40,7 +40,9 @@ public final class YamlConfig {
     @SuppressWarnings("unchecked")
     public <T> T get(final String key, final T defaultValue) {
         Object val = data.get(key);
-        if (val == null) return defaultValue;
+        if (val == null) {
+            return defaultValue;
+        }
         try {
             return (T) val;
         } catch (ClassCastException e) {

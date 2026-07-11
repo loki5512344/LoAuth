@@ -23,13 +23,33 @@ public final class MessageConfig {
         this.raw = raw;
     }
 
-    public Component header()                        { return text("first_login.header"); }
-    public Component returningHeader()                { return text("returning_login.header"); }
-    public Component returningBody()                  { return text("returning_login.body"); }
-    public Component returningTimeout()               { return text("returning_login.timeout"); }
-    public Component expiredHeader()                  { return text("expired.header"); }
-    public Component expiredBody()                    { return text("expired.body"); }
-    public Component success()                        { return text("success"); }
+    public Component header() {
+        return text("first_login.header");
+    }
+
+    public Component returningHeader() {
+        return text("returning_login.header");
+    }
+
+    public Component returningBody() {
+        return text("returning_login.body");
+    }
+
+    public Component returningTimeout() {
+        return text("returning_login.timeout");
+    }
+
+    public Component expiredHeader() {
+        return text("expired.header");
+    }
+
+    public Component expiredBody() {
+        return text("expired.body");
+    }
+
+    public Component success() {
+        return text("success");
+    }
 
     public Component code(final String code) {
         return parse("first_login.code", Map.of("code", code))
@@ -60,7 +80,9 @@ public final class MessageConfig {
 
     private Component text(final String path, final Map<String, String> placeholders) {
         String rawStr = resolveRaw(path);
-        if (rawStr == null) return Component.text('[' + path + ']');
+        if (rawStr == null) {
+            return Component.text('[' + path + ']');
+        }
         return parse(rawStr, placeholders);
     }
 

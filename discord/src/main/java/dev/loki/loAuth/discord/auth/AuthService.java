@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public final class AuthService implements AutoCloseable {
 
@@ -36,7 +38,9 @@ public final class AuthService implements AutoCloseable {
 
     public void verifyNewUser(final String code, final String discordId) {
         Optional<String> nick = db.consumeVerificationCode(code.toUpperCase());
-        if (nick.isEmpty()) throw new IllegalArgumentException("Invalid or expired code: " + code);
+        if (nick.isEmpty()) {
+            throw new IllegalArgumentException("Invalid or expired code: " + code);
+        }
         db.addUser(nick.get(), discordId);
         log.info("New user registered: {} -> {}", nick.get(), discordId);
     }
@@ -75,8 +79,9 @@ public final class AuthService implements AutoCloseable {
     private void kickExpiredLogins() {
         try {
             List<String> expired = db.popExpiredLogins();
-            if (!expired.isEmpty())
+            if (!expired.isEmpty()) {
                 log.info("Expired logins cleaned up: {}", expired);
+            }
         } catch (Exception e) {
             log.error("Error during expired login cleanup", e);
         }

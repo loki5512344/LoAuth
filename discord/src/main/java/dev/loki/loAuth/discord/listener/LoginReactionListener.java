@@ -19,8 +19,12 @@ public final class LoginReactionListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(final MessageReactionAddEvent event) {
-        if (event.getUser() == null || event.getUser().isBot()) return;
-        if (!CHECKMARK.equals(event.getReaction().getEmoji().getName())) return;
+        if (event.getUser() == null || event.getUser().isBot()) {
+            return;
+        }
+        if (!CHECKMARK.equals(event.getReaction().getEmoji().getName())) {
+            return;
+        }
 
         // Ищем токен по message_id — бот сохранил его при отправке
         db.consumeLoginTokenByMessageId(event.getMessageId()).ifPresent(nick ->

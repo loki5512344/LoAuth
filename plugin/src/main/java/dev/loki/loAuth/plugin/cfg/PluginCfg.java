@@ -15,18 +15,57 @@ public final class PluginCfg implements DbConfig {
         cfg = new YamlConfig(configPath);
     }
 
-    public String getMode()          { return cfg.getRequired("mode",   String.class); }
-    public String getToken()         { return cfg.get("token", ""); }
-    public String getDiscordLink()   { return cfg.get("discord_link", "discord.gg/ЗАМЕНИ_НА_СВОЙ"); }
+    public String getMode() {
+        return cfg.getRequired("mode", String.class);
+    }
 
-    @Override public String getDbType()                { return cfg.getRequired("db_type",               String.class); }
-    @Override public String getDbHost()                { return cfg.getRequired("db_host",               String.class); }
-    @Override public int    getDbPort()                { return cfg.getRequired("db_port",               Integer.class); }
-    @Override public String getDbName()                { return cfg.getRequired("db_name",               String.class); }
-    @Override public String getDbUser()                { return cfg.getRequired("db_user",               String.class); }
-    @Override public String getDbPassword()            { return cfg.getRequired("db_password",           String.class); }
-    @Override public int    getAuthTimeoutSeconds()    { return cfg.getRequired("auth_timeout_seconds",  Integer.class); }
-    @Override public int    getVerificationCodeLength(){ return cfg.getRequired("verification_code_length",Integer.class); }
+    public String getToken() {
+        return cfg.get("token", "");
+    }
+
+    public String getDiscordLink() {
+        return cfg.get("discord_link", "discord.gg/ЗАМЕНИ_НА_СВОЙ");
+    }
+
+    @Override
+    public String getDbType() {
+        return cfg.getRequired("db_type", String.class);
+    }
+
+    @Override
+    public String getDbHost() {
+        return cfg.getRequired("db_host", String.class);
+    }
+
+    @Override
+    public int getDbPort() {
+        return cfg.getRequired("db_port", Integer.class);
+    }
+
+    @Override
+    public String getDbName() {
+        return cfg.getRequired("db_name", String.class);
+    }
+
+    @Override
+    public String getDbUser() {
+        return cfg.getRequired("db_user", String.class);
+    }
+
+    @Override
+    public String getDbPassword() {
+        return cfg.getRequired("db_password", String.class);
+    }
+
+    @Override
+    public int getAuthTimeoutSeconds() {
+        return cfg.getRequired("auth_timeout_seconds", Integer.class);
+    }
+
+    @Override
+    public int getVerificationCodeLength() {
+        return cfg.getRequired("verification_code_length", Integer.class);
+    }
 
     public MessageConfig getMessages() {
         Object msgs = cfg.get("messages", null);

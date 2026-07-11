@@ -13,7 +13,11 @@ import org.slf4j.Logger;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public final class LoginListener {
 
@@ -129,6 +133,8 @@ public final class LoginListener {
 
     private void cancelKick(final String nick) {
         ScheduledFuture<?> f = pendingKicks.remove(nick);
-        if (f != null) f.cancel(false);
+        if (f != null) {
+            f.cancel(false);
+        }
     }
 }
